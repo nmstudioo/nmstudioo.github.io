@@ -12,7 +12,7 @@ export const publications: Publication[] = [
     excerpt: 'An investigation into the unified territory of interfaces, software engineering, and the rising agency of collaborative AI systems.',
     tags: ['Philosophy', 'UI/UX', 'AI Agency', 'Design'],
     accentGradient: 'linear-gradient(135deg, #0d0120 0%, #2a0a6b 50%, #1a0050 100%)',
-    coverImage: '/src/assets/images/manifesto_cover_1784343889064.jpg',
+    coverImage: '/images/manifesto_cover_1784343889064.jpg',
     content: `
 # The Synthesis Manifesto
 ## Design, Code, and the Future of AI Craft
@@ -55,7 +55,7 @@ NM Design is a long-term practice. This is not a portfolio. It is an archive of 
     excerpt: 'NM Design began as a personal creative practice and gradually evolved into a cohesive digital design system and professional headquarters.',
     tags: ['Personal Brand', 'Design Systems', 'Digital Identity', 'Typography'],
     accentGradient: 'linear-gradient(135deg, #020010 0%, #1e1145 50%, #0d0030 100%)',
-    coverImage: '/src/assets/images/nm_design_identity_cover_1784343131601.jpg',
+    coverImage: '/images/nm_design_identity_cover_1784343131601.jpg',
     content: `
 # NM Design: Personal Brand & Digital Identity
 ## The evolution of a cohesive creative practice into a system-engineered home
@@ -99,7 +99,7 @@ The project ultimately reinforced a belief that has become central to NM Design:
     excerpt: 'An investigation into legacy infrastructure, exploring whether Blogger can support contemporary design principles through thoughtful architecture.',
     tags: ['Blogger', 'Legacy Web', 'Theme Engineering', 'CSS Architecture'],
     accentGradient: 'linear-gradient(135deg, #1b1000 0%, #4a2d00 50%, #150a00 100%)',
-    coverImage: '/src/assets/images/blogger_theme_engineering_cover_1784343277348.jpg',
+    coverImage: '/images/blogger_theme_engineering_cover_1784343277348.jpg',
     content: `
 # Blogger Theme Engineering
 ## Restructuring legacy web publishing through system discipline
@@ -146,7 +146,7 @@ This project reinforced a belief that is now central to NM Design: good architec
     excerpt: 'A structured workflow where AI serves as a collaborative production tool while human judgment remains responsible for direction and final quality.',
     tags: ['AI Workflows', 'Creative Direction', 'Productivity', 'Systems Design'],
     accentGradient: 'linear-gradient(135deg, #0d001a 0%, #2e0854 50%, #150029 100%)',
-    coverImage: '/src/assets/images/workflow_cover_1784343907180.jpg',
+    coverImage: '/images/workflow_cover_1784343907180.jpg',
     content: `
 # AI-Assisted Creative Workflow
 ## Balancing algorithmic abundance with deliberate human curation
@@ -207,7 +207,7 @@ The most significant lesson was unexpectedly simple: artificial intelligence did
     excerpt: 'Documents how disciplined observation, controlled experimentation, and iterative calibration can elevate modest consumer audio hardware.',
     tags: ['Audio Calibration', 'Digital Signals', 'Feature Reference', 'Hardware Optimization'],
     accentGradient: 'linear-gradient(135deg, #05051a 0%, #170d3a 50%, #030310 100%)',
-    coverImage: '/src/assets/images/wavelet_cover_1784343922790.jpg',
+    coverImage: '/images/wavelet_cover_1784343922790.jpg',
     content: `
 # Wavelet Complete Feature Reference
 ## Systematic audio calibration and hardware optimization
@@ -251,7 +251,7 @@ The most significant lesson was that the instinct to upgrade often appears befor
     excerpt: 'A systematic browser optimization guide to reduce latency, improve responsiveness, and eliminate software bottlenecks through granular configurations.',
     tags: ['Via Browser', 'Web Performance', 'Latency Reduction', 'System Settings'],
     accentGradient: 'linear-gradient(135deg, #1f0800 0%, #471d02 50%, #140500 100%)',
-    coverImage: '/src/assets/images/via_cover_1784343935497.jpg',
+    coverImage: '/images/via_cover_1784343935497.jpg',
     content: `
 # Via Browser Optimization Guide
 ## Reclaiming client performance through systematic interface tuning
@@ -308,7 +308,7 @@ The most enduring lesson of this project is that we often blame hardware for sof
     excerpt: 'Typography and spacing are structural constraints defining how information is processed, establishing visual rhythm and spatial harmony.',
     tags: ['Typography', 'Grid Systems', 'Spacing Hierarchy', 'UI Design'],
     accentGradient: 'linear-gradient(135deg, #00120f 0%, #033a30 50%, #00120b 100%)',
-    coverImage: '/src/assets/images/typography_cover_1784343945766.jpg',
+    coverImage: '/images/typography_cover_1784343945766.jpg',
     content: `
 # Typography & Spacing: Design System Fundamentals
 ## Engineering cognitive rhythm and spatial harmony
@@ -367,7 +367,7 @@ Typography and spacing are the tools of this organization. They are the instrume
     excerpt: 'An exploration of composition, arrangement, and production emerging through iterative collaboration between human intention and generative music tools.',
     tags: ['Music Production', 'AI Composition', 'Creative Systems', 'Heavy Metal'],
     accentGradient: 'linear-gradient(135deg, #14052e 0%, #311166 50%, #0c021f 100%)',
-    coverImage: '/src/assets/images/metal_cover_1784343961909.jpg',
+    coverImage: '/images/metal_cover_1784343961909.jpg',
     content: `
 # Metal AI Music — No Limits
 ## Composing a cohesive 9-track heavy metal album via algorithmic collaboration
@@ -432,7 +432,7 @@ The most valuable contribution of artificial intelligence is not creation itself
     excerpt: 'Framework for Android customization prioritizing understanding, stewardship, and disciplined configuration over destructive modifications.',
     tags: ['Android Systems', 'Optimization Framework', 'Privacy Engineering', 'System Stewardship'],
     accentGradient: 'linear-gradient(135deg, #24000f 0%, #4f0322 50%, #170009 100%)',
-    coverImage: '/src/assets/images/android_cover_1784343975720.jpg',
+    coverImage: '/images/android_cover_1784343975720.jpg',
     content: `
 # Android Customization Framework
 ## Systematic stewardship, performance tuning, and user agency

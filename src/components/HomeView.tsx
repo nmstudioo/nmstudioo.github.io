@@ -154,7 +154,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
           <div className="aspect-[3/4] rounded-2xl bg-ink-3 border border-white/5 overflow-hidden relative max-w-md w-full mb-10 lg:mb-0 mx-auto lg:mx-0">
             <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(123,97,255,0.1),transparent_60%),linear-gradient(315deg,rgba(60,40,140,0.1),transparent_60%)] z-10 pointer-events-none" />
             <img 
-              src="/src/assets/images/noushad_portrait_1784467295854.jpg" 
+              src="/images/noushad_portrait_1784467295854.jpg" 
               alt="Noushad Mostafa Portrait" 
               className="w-full h-full object-cover transition-all duration-700 hover:scale-105"
               referrerPolicy="no-referrer"
