@@ -35,9 +35,9 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
   }, []);
 
   return (
-    <div className="relative overflow-hidden pt-24">
+    <div className="relative overflow-hidden pt-20 md:pt-24">
       {/* ─── HERO SECTION ─── */}
-      <section className="relative min-h-[90svh] flex flex-col justify-end pb-16 lg:pb-24 overflow-hidden px-6 md:px-12 lg:px-20 max-w-7xl mx-auto">
+      <section className="relative pt-4 pb-16 lg:pt-0 lg:pb-24 lg:min-h-[85svh] flex flex-col justify-start lg:justify-end overflow-hidden px-6 md:px-12 lg:px-20 max-w-7xl mx-auto">
         {/* Animated grid lines background */}
         <div 
           className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:72px_72px] pointer-events-none z-0"
@@ -50,7 +50,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
 
         <div className="relative z-10 w-full mb-8">
           {/* Status badge + Time coordinate grid */}
-          <div className="flex flex-wrap items-center gap-3 mb-8">
+          <div className="flex flex-wrap items-center gap-2.5 mb-6 md:mb-8">
             <motion.div 
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -75,7 +75,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
           </div>
 
           {/* Main heading */}
-          <h1 className="font-display text-[clamp(34px,9.5vw,112px)] font-extrabold leading-[0.94] tracking-tighter text-white mb-10 overflow-hidden">
+          <h1 className="font-display text-[clamp(34px,9.5vw,112px)] font-extrabold leading-[0.94] tracking-tighter text-white mb-6 md:mb-8 overflow-hidden">
             <motion.span 
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
@@ -107,23 +107,23 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 mt-6"
+            className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 mt-0"
           >
             <p className="max-w-[440px] text-base text-fog-3 font-light leading-relaxed">
               <strong className="text-fog font-medium">Frontend developer &amp; UI/UX designer</strong> from Dhaka, Bangladesh, working across interfaces, AI-assisted workflows, and creative systems.
               I move between design and development to build things that feel intentional and genuinely useful.
             </p>
-            <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 sm:gap-4 flex-shrink-0">
+            <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto flex-shrink-0">
               <button 
                 onClick={() => onNavigate('work')}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-violet hover:bg-[#6b4ff0] text-white rounded-full font-medium text-[15px] transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(123,97,255,0.4)] cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-violet hover:bg-[#6b4ff0] text-white rounded-full font-medium text-[15px] transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(123,97,255,0.4)] cursor-pointer w-full sm:w-auto"
               >
                 View Work
                 <ArrowRight className="w-4 h-4" />
               </button>
               <button 
                 onClick={() => onNavigate('contact')}
-                className="inline-flex items-center gap-2 px-6 py-4 border border-white/13 hover:border-fog-2 text-fog-2 hover:text-white rounded-full font-medium text-[15px] transition-all hover:-translate-y-0.5 cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-4 border border-white/13 hover:border-fog-2 text-fog-2 hover:text-white rounded-full font-medium text-[15px] transition-all hover:-translate-y-0.5 cursor-pointer w-full sm:w-auto"
               >
                 Get in Touch
               </button>
@@ -135,7 +135,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 mt-12"
+            className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 mt-8 md:mt-12"
           >
             {[
               { num: '3+', label: 'Years, self-directed' },
@@ -143,7 +143,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
               { num: '9', label: 'Album tracks released' },
               { num: '2', label: 'Chess championships' }
             ].map((stat, i) => (
-              <div key={i} className="px-5 py-3.5 border border-white/5 rounded-xl bg-white/3 backdrop-blur-md flex flex-col justify-center">
+              <div key={i} className="px-4 py-3 sm:px-5 sm:py-3.5 border border-white/5 rounded-xl bg-white/3 backdrop-blur-md flex flex-col justify-center">
                 <div className="font-display text-2xl font-bold text-white tracking-tight leading-none">{stat.num}</div>
                 <div className="text-[11px] text-fog-3 mt-1 font-light uppercase tracking-wider">{stat.label}</div>
               </div>
@@ -402,17 +402,17 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
             Let's work together
             <span className="w-7 h-[1px] bg-violet" />
           </div>
-          <h2 className="font-display text-[44px] md:text-7xl lg:text-[96px] font-extrabold leading-[0.95] tracking-tighter text-white mb-8">
+          <h2 className="font-display text-[32px] sm:text-[44px] md:text-7xl lg:text-[96px] font-extrabold leading-[0.95] tracking-tighter text-white mb-8">
             Got a project<br />in <em className="not-italic text-violet">mind?</em>
           </h2>
-          <p className="max-w-md text-[16px] text-fog-3 font-light leading-relaxed mx-auto mb-12">
+          <p className="max-w-md text-[15px] sm:text-[16px] text-fog-3 font-light leading-relaxed mx-auto mb-12">
             I'm open to internships, freelance contracts, and creative collaborations. Based in Dhaka, Bangladesh — happy to collaborate with people worldwide.
           </p>
           <button 
             onClick={() => onNavigate('contact')}
-            className="inline-flex items-center gap-2.5 px-10 py-5 bg-violet hover:bg-[#6b4ff0] text-white rounded-full font-medium text-base transition-all hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(123,97,255,0.4)]"
+            className="inline-flex items-center justify-center gap-2.5 px-6 py-4.5 sm:px-10 sm:py-5 bg-violet hover:bg-[#6b4ff0] text-white rounded-full font-medium text-sm sm:text-base transition-all hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(123,97,255,0.4)] w-full sm:w-auto"
           >
-            <Briefcase className="w-4.5 h-4.5" />
+            <Briefcase className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
             nooushadd@gmail.com
           </button>
         </div>

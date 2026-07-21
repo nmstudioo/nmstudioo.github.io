@@ -191,7 +191,7 @@ export default function ContactView() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-2 inline-flex items-center justify-center gap-2 px-7 py-3 bg-violet hover:bg-[#6b4ff0] disabled:opacity-50 text-white rounded-full font-medium text-xs tracking-wider uppercase transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-violet/10 cursor-pointer self-start"
+                className="mt-2 inline-flex items-center justify-center gap-2 px-7 py-3 bg-violet hover:bg-[#6b4ff0] disabled:opacity-50 text-white rounded-full font-medium text-xs tracking-wider uppercase transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-violet/10 cursor-pointer w-full sm:w-auto self-start"
               >
                 <span>{isSubmitting ? 'Transmitting...' : 'Send Message'}</span>
                 <Send className="w-3.5 h-3.5" />
