@@ -153,12 +153,12 @@ export default function WorkView({ onNavigate }: WorkViewProps) {
           </h2>
           
           {/* Category Filter Pills */}
-          <div className="flex flex-wrap gap-1.5 max-w-full">
+          <div className="flex gap-1.5 overflow-x-auto pb-2 scrollbar-none md:flex-wrap md:overflow-visible -mx-6 px-6 md:mx-0 md:px-0">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-mono tracking-wider transition-all ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-mono tracking-wider transition-all shrink-0 md:shrink-1 ${
                   activeCategory === cat
                     ? 'bg-violet text-white'
                     : 'bg-white/3 border border-white/5 text-fog-3 hover:text-white hover:bg-white/5'

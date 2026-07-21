@@ -33,6 +33,16 @@ export interface Publication {
   content: string; // Markdown or rich text content
   accentGradient: string;
   coverImage?: string;
+  
+  // Roadmap metadata extensions
+  version?: string;
+  status?: 'Canonical' | 'Stable' | 'Experimental' | 'Revision';
+  difficulty?: 'Introductory' | 'Intermediate' | 'Systemic' | 'Technical' | 'Advanced';
+  wordCount?: number;
+  executiveSummary?: string;
+  takeaways?: string[];
+  revisionHistory?: { date: string; version: string; note: string }[];
+  bibliography?: string[];
 }
 
 export interface ProcessStep {

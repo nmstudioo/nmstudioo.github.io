@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, Star, Award, Briefcase, Zap, Cpu, Sparkles } from 'lucide-react';
 import { PageId } from '../types';
@@ -13,6 +14,26 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
   // Take first 3 publications to show as highlights
   const featuredPublications = publications.slice(0, 3);
 
+  // Live Dhaka Time State
+  const [dhakaTime, setDhakaTime] = useState('');
+
+  useEffect(() => {
+    const updateTime = () => {
+      const formatted = new Date().toLocaleTimeString('en-US', {
+        timeZone: 'Asia/Dhaka',
+        hour12: true,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      });
+      setDhakaTime(formatted);
+    };
+    
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="relative overflow-hidden pt-24">
       {/* ─── HERO SECTION ─── */}
@@ -27,17 +48,31 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
         <div className="absolute -top-48 -right-24 w-[600px] h-[600px] rounded-full bg-radial from-violet/20 to-transparent blur-[120px] pointer-events-none z-0 animate-orb-1" />
         <div className="absolute -bottom-24 -left-24 w-[500px] h-[500px] rounded-full bg-radial from-violet/12 to-transparent blur-[100px] pointer-events-none z-0 animate-orb-2" />
 
-        <div className="relative z-10 w-full">
-          {/* Status badge */}
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 border border-white/13 rounded-full font-mono text-[11px] tracking-widest uppercase text-fog-3 bg-white/3 backdrop-blur-md mb-8"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Open to internships &amp; freelance work
-          </motion.div>
+        <div className="relative z-10 w-full mb-8">
+          {/* Status badge + Time coordinate grid */}
+          <div className="flex flex-wrap items-center gap-3 mb-8">
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 border border-white/13 rounded-full font-mono text-[11px] tracking-widest uppercase text-fog-3 bg-white/3 backdrop-blur-md"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Open to internships &amp; freelance work
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 border border-white/5 rounded-full font-mono text-[11px] tracking-widest uppercase text-fog-3 bg-white/3 backdrop-blur-md"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-violet" />
+              <span className="hidden sm:inline">Dhaka, BD (23.8103° N, 90.4125° E) — </span>
+              <span className="sm:hidden">Dhaka — </span>
+              <span className="text-white tabular-nums">{dhakaTime || '00:00:00 AM'}</span>
+            </motion.div>
+          </div>
 
           {/* Main heading */}
           <h1 className="font-display text-[clamp(34px,9.5vw,112px)] font-extrabold leading-[0.94] tracking-tighter text-white mb-10 overflow-hidden">
@@ -114,6 +149,25 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
               </div>
             ))}
           </motion.div>
+        </div>
+
+        {/* Elegant Scroll Down Capsule */}
+        <div className="absolute bottom-6 left-6 md:left-12 lg:left-20 z-10 hidden md:flex items-center gap-3 select-none">
+          <div className="h-9 w-5 rounded-full border border-white/20 flex justify-center pt-2">
+            <motion.div 
+              animate={{ 
+                y: [0, 10, 0],
+                opacity: [0.4, 1, 0.4] 
+              }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+              className="w-1 h-1.5 rounded-full bg-violet"
+            />
+          </div>
+          <span className="font-mono text-[9px] tracking-[0.25em] uppercase text-fog-3">Scroll down</span>
         </div>
       </section>
 
@@ -210,8 +264,8 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
       <section className="py-24 lg:py-32 border-t border-white/[0.06] px-6 md:px-12 lg:px-20 max-w-7xl mx-auto relative z-10">
         <div className="flex items-end justify-between mb-16 gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.2em] uppercase text-violet mb-4">
-              <span className="w-5 h-[1px] bg-violet/50" />
+            <div className="inline-flex items-center gap-2.5 font-mono text-[11px] tracking-widest uppercase text-violet mb-4">
+              <span className="w-7 h-[1px] bg-violet" />
               Publications &amp; Projects
             </div>
             <h2 className="font-display text-3xl md:text-5xl font-bold leading-tight tracking-tight text-white">

@@ -86,17 +86,17 @@ export default function ContactView() {
   };
 
   return (
-    <div className="pt-28 pb-24 max-w-7xl mx-auto px-6 md:px-12 lg:px-20 relative z-10">
+    <div className="pt-24 pb-20 max-w-7xl mx-auto px-6 md:px-12 lg:px-20 relative z-10">
       {/* Page Header */}
       <section className="py-12 md:py-16">
-        <div className="inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.2em] uppercase text-violet mb-5">
-          <span className="w-5 h-[1px] bg-violet/50" />
+        <div className="inline-flex items-center gap-2.5 font-mono text-[11px] tracking-widest uppercase text-violet mb-4">
+          <span className="w-7 h-[1px] bg-violet" />
           Get In Touch
         </div>
         <h1 className="font-display text-[clamp(34px,8.5vw,72px)] font-bold text-white leading-[1.05] tracking-tight mb-6">
           Let's Connect
         </h1>
-        <p className="max-w-xl text-sm md:text-base text-fog-3 font-light leading-relaxed">
+        <p className="max-w-xl text-base text-fog-3 font-light leading-relaxed">
           I'm open to professional roles, contracts, freelance work, and technical collaborations. Use the form below to transmit a direct message to my mailbox.
         </p>
       </section>

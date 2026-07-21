@@ -5,7 +5,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowUp } from 'lucide-react';
+import { Home, Briefcase, Ruler, User, Activity, Calendar, Mail, FileText, ArrowUp } from 'lucide-react';
 import { PageId } from './types';
 import { publications } from './data/publications';
 
@@ -17,6 +17,7 @@ import ProcessView from './components/ProcessView';
 import ExperienceView from './components/ExperienceView';
 import ContactView from './components/ContactView';
 import PublicationSingleView from './components/PublicationSingleView';
+import DesignSystemView from './components/DesignSystemView';
 
 // Core layout components
 import Navigation from './components/Navigation';
@@ -28,6 +29,9 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [loadCount, setLoadCount] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [paletteQuery, setPaletteQuery] = useState('');
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   // Parse page pathname or hash to PageId
   const parseLocation = (): PageId => {
@@ -53,7 +57,7 @@ export default function App() {
       return `publication:${slug}`;
     }
     
-    if (['work', 'about', 'process', 'experience', 'contact'].includes(cleanPath)) {
+    if (['work', 'about', 'process', 'experience', 'contact', 'design-system'].includes(cleanPath)) {
       return cleanPath as PageId;
     }
     
@@ -66,7 +70,7 @@ export default function App() {
           return `publication:${slug}`;
         }
         const hashPath = cleanHash.replace('.html', '');
-        if (['work', 'about', 'process', 'experience', 'contact'].includes(hashPath)) {
+        if (['work', 'about', 'process', 'experience', 'contact', 'design-system'].includes(hashPath)) {
           return hashPath as PageId;
         }
       }
@@ -97,18 +101,86 @@ export default function App() {
 
   // Set URL on navigation using HTML5 History API
   const navigateTo = (page: PageId) => {
+    let targetPage = page;
+    if (page.startsWith('publications/')) {
+      targetPage = `publication:${page.replace('publications/', '')}`;
+    }
+
     let url = '/';
-    if (page.startsWith('publication:')) {
-      const slug = page.replace('publication:', '');
+    let hash = '#/';
+    if (targetPage.startsWith('publication:')) {
+      const slug = targetPage.replace('publication:', '');
       url = `/publications/${slug}`;
-    } else if (page !== 'home') {
-      url = `/${page}`;
+      hash = `#/publications/${slug}`;
+    } else if (targetPage !== 'home') {
+      url = `/${targetPage}`;
+      hash = `#/${targetPage}`;
     }
     
-    window.history.pushState(null, '', url);
-    setCurrentPage(page);
+    // We update both the history state with the hash representation.
+    // This maintains back-button functionality and allows reloading directly in iframe previews
+    // without triggering parent-window route-guard reloads that redirect the user back to `/`
+    window.history.pushState(null, '', hash);
+    setCurrentPage(targetPage);
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
+
+  // Keyboard shortcut listener for sequential "g" keys and Ctrl+K Command Palette
+  useEffect(() => {
+    let lastKey = '';
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Toggle Command Palette on Ctrl+K or Cmd+K
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setPaletteOpen(prev => {
+          const next = !prev;
+          if (next) {
+            setPaletteQuery('');
+            setSelectedIndex(0);
+          }
+          return next;
+        });
+        return;
+      }
+
+      if (e.key === 'Escape') {
+        setPaletteOpen(false);
+        return;
+      }
+
+      // Skip sequential triggers if user is actively writing in a text input field
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === 'INPUT' || 
+        target.tagName === 'TEXTAREA' || 
+        target.isContentEditable
+      ) {
+        return;
+      }
+
+      if (lastKey === 'g') {
+        lastKey = '';
+        if (e.key === 'h') { e.preventDefault(); navigateTo('home'); }
+        else if (e.key === 'w') { e.preventDefault(); navigateTo('work'); }
+        else if (e.key === 'd') { e.preventDefault(); navigateTo('design-system'); }
+        else if (e.key === 'a') { e.preventDefault(); navigateTo('about'); }
+        else if (e.key === 'p') { e.preventDefault(); navigateTo('process'); }
+        else if (e.key === 'e') { e.preventDefault(); navigateTo('experience'); }
+        else if (e.key === 'c') { e.preventDefault(); navigateTo('contact'); }
+        return;
+      }
+
+      if (e.key === 'g') {
+        lastKey = 'g';
+        setTimeout(() => {
+          if (lastKey === 'g') lastKey = '';
+        }, 1000);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Fake beautiful loader counting to 100%
   useEffect(() => {
@@ -185,6 +257,10 @@ export default function App() {
         case 'process':
           title = "Development Process — Noushad Mostafa";
           description = "A comprehensive deep dive into my professional design-to-development workflow, token-based systems, and performance standards.";
+          break;
+        case 'design-system':
+          title = "Interactive Design System Guidelines — Noushad Mostafa";
+          description = "Explore NM Design's official interactive Design System, showcasing core color palettes, typography scale, spatial rulers, and motion physics.";
           break;
         case 'experience':
           title = "Professional Experience — Noushad Mostafa";
@@ -298,6 +374,8 @@ export default function App() {
         return <HomeView onNavigate={navigateTo} />;
       case 'work':
         return <WorkView onNavigate={navigateTo} />;
+      case 'design-system':
+        return <DesignSystemView />;
       case 'about':
         return <AboutView />;
       case 'process':
@@ -310,6 +388,62 @@ export default function App() {
         return <HomeView onNavigate={navigateTo} />;
     }
   };
+
+  // Filter list for the search command palette
+  const staticItems = [
+    { id: 'home', title: 'Go to Home Page', category: 'Navigation', icon: <Home className="w-4 h-4 text-violet" /> },
+    { id: 'work', title: 'Go to Work & Publications', category: 'Navigation', icon: <Briefcase className="w-4 h-4 text-violet" /> },
+    { id: 'design-system', title: 'Go to Design System Guidelines', category: 'Navigation', icon: <Ruler className="w-4 h-4 text-violet" /> },
+    { id: 'about', title: 'Go to About Me', category: 'Navigation', icon: <User className="w-4 h-4 text-violet" /> },
+    { id: 'process', title: 'Go to Development Process', category: 'Navigation', icon: <Activity className="w-4 h-4 text-violet" /> },
+    { id: 'experience', title: 'Go to Experience Timeline', category: 'Navigation', icon: <Calendar className="w-4 h-4 text-violet" /> },
+    { id: 'contact', title: 'Go to Contact / Let\'s Talk', category: 'Navigation', icon: <Mail className="w-4 h-4 text-violet" /> },
+  ];
+
+  const publicationItems = publications.map((p) => ({
+    id: `publication:${p.slug}`,
+    title: p.title,
+    category: 'Publication / Research',
+    icon: <FileText className="w-4 h-4 text-violet" />,
+    excerpt: p.excerpt,
+    tags: p.tags.join(' ')
+  }));
+
+  const allPaletteItems = [...staticItems, ...publicationItems];
+
+  const filteredItems = allPaletteItems.filter((item) => {
+    const q = paletteQuery.toLowerCase().trim();
+    if (!q) return true; // Show all by default
+    const matchesTitle = item.title.toLowerCase().includes(q);
+    const matchesCategory = item.category.toLowerCase().includes(q);
+    const matchesTags = 'tags' in item ? ((item as any).tags || '').toLowerCase().includes(q) : false;
+    const matchesExcerpt = 'excerpt' in item ? ((item as any).excerpt || '').toLowerCase().includes(q) : false;
+    return matchesTitle || matchesCategory || matchesTags || matchesExcerpt;
+  });
+
+  // Track keyboard events inside Command Palette
+  useEffect(() => {
+    if (!paletteOpen) return;
+    
+    const handlePaletteKeys = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev + 1) % filteredItems.length);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev - 1 + filteredItems.length) % filteredItems.length);
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (filteredItems[selectedIndex]) {
+          navigateTo(filteredItems[selectedIndex].id);
+          setPaletteOpen(false);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handlePaletteKeys);
+    return () => window.removeEventListener('keydown', handlePaletteKeys);
+  }, [paletteOpen, filteredItems, selectedIndex]);
 
   return (
     <div className="relative min-h-screen bg-ink text-fog selection:bg-violet selection:text-white noise-overlay">
@@ -347,7 +481,15 @@ export default function App() {
       {!loading && (
         <div className="flex flex-col min-h-screen">
           <CustomCursor />
-          <Navigation currentPage={currentPage} onNavigate={navigateTo} />
+          <Navigation 
+            currentPage={currentPage} 
+            onNavigate={navigateTo} 
+            onOpenPalette={() => {
+              setPaletteOpen(true);
+              setPaletteQuery('');
+              setSelectedIndex(0);
+            }} 
+          />
 
           {/* Animate Page Switcher */}
           <main className="flex-grow">
@@ -378,6 +520,105 @@ export default function App() {
           </button>
         </div>
       )}
+
+      {/* COMMAND PALETTE INTERACTIVE MODAL OVERLAY */}
+      <AnimatePresence>
+        {paletteOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setPaletteOpen(false)}
+              className="absolute inset-0 bg-ink-2/80 backdrop-blur-md cursor-pointer"
+            />
+
+            {/* Modal Body */}
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 10 }}
+              transition={{ type: 'spring', stiffness: 350, damping: 28 }}
+              className="relative w-full max-w-2xl bg-ink border border-white/10 rounded-2xl overflow-hidden shadow-[0_32px_64px_rgba(0,0,0,0.8)] flex flex-col max-h-[80vh]"
+            >
+              {/* Header Search Field */}
+              <div className="p-4 border-b border-white/5 flex items-center gap-3 bg-white/1">
+                <span className="text-violet font-mono text-xs uppercase tracking-widest font-semibold shrink-0">Command</span>
+                <input 
+                  type="text" 
+                  autoFocus
+                  placeholder="Type to search publications, tags, or navigation..."
+                  value={paletteQuery}
+                  onChange={(e) => {
+                    setPaletteQuery(e.target.value);
+                    setSelectedIndex(0);
+                  }}
+                  className="w-full bg-transparent border-none text-white focus:outline-none placeholder-fog-3 text-sm font-light"
+                />
+                <button 
+                  onClick={() => setPaletteOpen(false)}
+                  className="px-2.5 py-1 rounded bg-white/5 text-[10px] font-mono uppercase tracking-wider text-fog-3 hover:text-white border border-white/5"
+                >
+                  ESC
+                </button>
+              </div>
+
+              {/* Suggestions / Dynamic list */}
+              <div className="flex-grow overflow-y-auto p-2 space-y-1">
+                {filteredItems.length > 0 ? (
+                  filteredItems.map((item, idx) => {
+                    const isSelected = selectedIndex === idx;
+                    return (
+                      <div 
+                        key={item.id}
+                        onClick={() => {
+                          navigateTo(item.id);
+                          setPaletteOpen(false);
+                        }}
+                        onMouseEnter={() => setSelectedIndex(idx)}
+                        className={`p-3 rounded-xl cursor-pointer transition-all flex items-center justify-between gap-4 ${
+                          isSelected ? 'bg-violet/15 border-l-2 border-violet pl-2.5' : 'hover:bg-white/2 border-l-2 border-transparent'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 truncate">
+                          <span className="text-base shrink-0">{item.icon}</span>
+                          <div className="truncate">
+                            <div className="font-display text-[13px] font-bold text-white leading-normal">
+                              {item.title}
+                            </div>
+                            {'excerpt' in item && item.excerpt && (
+                              <p className="text-[11px] text-fog-3 truncate font-light mt-0.5 max-w-lg">
+                                {item.excerpt}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        <span className="font-mono text-[9px] text-violet font-bold uppercase tracking-widest shrink-0 bg-violet/5 px-2 py-0.5 rounded-full border border-violet/10">
+                          {item.category}
+                        </span>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="p-8 text-center text-fog-3 font-mono text-xs">
+                    No matching parameters found. Try searching for "System", "Aesthetics", or "Blogger".
+                  </div>
+                )}
+              </div>
+
+              {/* Footer status bar */}
+              <div className="p-3 bg-white/1 border-t border-white/5 flex justify-between items-center text-[10px] font-mono text-fog-3">
+                <div className="flex gap-4">
+                  <span><kbd className="bg-white/5 px-1 py-0.5 rounded border border-white/10 text-[9px]">↑↓</kbd> Navigate</span>
+                  <span><kbd className="bg-white/5 px-1 py-0.5 rounded border border-white/10 text-[9px]">Enter</kbd> Select</span>
+                </div>
+                <span>NM DESIGN NODE // ACTIVE</span>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

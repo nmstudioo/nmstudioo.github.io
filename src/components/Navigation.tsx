@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { PageId } from '../types';
+import { Search } from 'lucide-react';
 
 interface NavigationProps {
   currentPage: PageId;
   onNavigate: (page: PageId) => void;
+  onOpenPalette?: () => void;
 }
 
-export default function Navigation({ currentPage, onNavigate }: NavigationProps) {
+export default function Navigation({ currentPage, onNavigate, onOpenPalette }: NavigationProps) {
   const [scrolled, setScrolled] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -27,6 +29,7 @@ export default function Navigation({ currentPage, onNavigate }: NavigationProps)
   const navLinks = [
     { id: 'home', label: 'Home' },
     { id: 'work', label: 'Work & Publications' },
+    { id: 'design-system', label: 'Design System' },
     { id: 'about', label: 'About' },
     { id: 'process', label: 'Process' },
     { id: 'experience', label: 'Experience' },
@@ -51,7 +54,7 @@ export default function Navigation({ currentPage, onNavigate }: NavigationProps)
         </a>
 
         {/* Desktop links */}
-        <ul className="hidden md:flex items-center gap-9 list-none">
+        <ul className="hidden md:flex items-center gap-7 list-none">
           {navLinks.map((link) => {
             const isActive = currentPage === link.id || (link.id === 'work' && currentPage.startsWith('publication:'));
             return (
@@ -59,7 +62,7 @@ export default function Navigation({ currentPage, onNavigate }: NavigationProps)
                 <a
                   href={`#/${link.id === 'home' ? '' : link.id}`}
                   onClick={(e) => handleLinkClick(link.id, e)}
-                  className={`text-[13px] font-medium tracking-widest uppercase transition-colors duration-200 relative py-1 ${
+                  className={`text-[12px] font-medium tracking-widest uppercase transition-colors duration-200 relative py-1 ${
                     isActive ? 'text-white' : 'text-fog-3 hover:text-white'
                   }`}
                 >
@@ -73,11 +76,27 @@ export default function Navigation({ currentPage, onNavigate }: NavigationProps)
               </li>
             );
           })}
+          
+          {/* Global Search/Palette Trigger */}
+          {onOpenPalette && (
+            <li>
+              <button
+                onClick={onOpenPalette}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-white/8 bg-white/3 hover:border-violet/30 hover:bg-violet/5 text-[11px] font-mono text-fog-3 hover:text-white transition-all cursor-pointer"
+                title="Search / Command Palette (Ctrl+K)"
+              >
+                <Search className="w-3.5 h-3.5 text-violet" />
+                <span className="hidden lg:inline uppercase tracking-widest text-[9px]">Search</span>
+                <kbd className="hidden lg:inline bg-white/5 px-1 py-0.5 rounded text-[8px] border border-white/10 font-sans">⌘K</kbd>
+              </button>
+            </li>
+          )}
+
           <li>
             <a
               href="#/contact"
               onClick={(e) => handleLinkClick('contact', e)}
-              className={`px-5 py-2.5 border rounded-full text-[13px] font-medium tracking-widest uppercase transition-all duration-200 ${
+              className={`px-5 py-2 border rounded-full text-[12px] font-medium tracking-widest uppercase transition-all duration-200 ${
                 currentPage === 'contact'
                   ? 'bg-violet border-violet text-white'
                   : 'border-white/13 text-white hover:bg-violet hover:border-violet'
@@ -88,34 +107,45 @@ export default function Navigation({ currentPage, onNavigate }: NavigationProps)
           </li>
         </ul>
 
-        {/* Mobile menu button */}
-        <button
-          className="md:hidden flex flex-col gap-1.5 p-2 z-50"
-          onClick={() => setDrawerOpen(!drawerOpen)}
-          aria-label={drawerOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={drawerOpen}
-        >
-          <span
-            className={`block w-5.5 h-[1.5px] bg-fog transition-all duration-300 ${
-              drawerOpen ? 'translate-y-[7.5px] rotate-45' : ''
-            }`}
-          />
-          <span
-            className={`block w-5.5 h-[1.5px] bg-fog transition-all duration-300 ${
-              drawerOpen ? 'opacity-0' : ''
-            }`}
-          />
-          <span
-            className={`block w-5.5 h-[1.5px] bg-fog transition-all duration-300 ${
-              drawerOpen ? '-translate-y-[7.5px] -rotate-45' : ''
-            }`}
-          />
-        </button>
+        {/* Mobile controls (Menu) */}
+        <div className="md:hidden flex items-center gap-1.5">
+          {onOpenPalette && (
+            <button
+              onClick={onOpenPalette}
+              className="p-2.5 text-violet hover:text-white transition-colors cursor-pointer"
+              aria-label="Open search palette"
+            >
+              <Search className="w-5 h-5" />
+            </button>
+          )}
+          <button
+            className="flex flex-col gap-1.5 p-2"
+            onClick={() => setDrawerOpen(!drawerOpen)}
+            aria-label={drawerOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={drawerOpen}
+          >
+            <span
+              className={`block w-5.5 h-[1.5px] bg-fog transition-all duration-300 ${
+                drawerOpen ? 'translate-y-[7.5px] rotate-45' : ''
+              }`}
+            />
+            <span
+              className={`block w-5.5 h-[1.5px] bg-fog transition-all duration-300 ${
+                drawerOpen ? 'opacity-0' : ''
+              }`}
+            />
+            <span
+              className={`block w-5.5 h-[1.5px] bg-fog transition-all duration-300 ${
+                drawerOpen ? '-translate-y-[7.5px] -rotate-45' : ''
+              }`}
+            />
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Drawer */}
       <div
-        className={`fixed inset-0 bg-ink-2 z-40 flex flex-col items-center justify-center gap-8 transition-all duration-500 ease-out md:hidden ${
+        className={`fixed inset-0 bg-ink-2 z-40 flex flex-col items-center justify-center gap-6 transition-all duration-500 ease-out md:hidden ${
           drawerOpen ? 'translate-y-0 opacity-100 pointer-events-auto visible' : '-translate-y-full opacity-0 pointer-events-none invisible'
         }`}
       >
@@ -124,7 +154,9 @@ export default function Navigation({ currentPage, onNavigate }: NavigationProps)
             key={link.id}
             href={`#/${link.id === 'home' ? '' : link.id}`}
             onClick={(e) => handleLinkClick(link.id, e)}
-            className="font-display text-3xl font-bold text-fog-2 hover:text-violet transition-colors"
+            className={`font-display text-2xl font-bold transition-colors ${
+              currentPage === link.id ? 'text-violet' : 'text-fog-2 hover:text-white'
+            }`}
           >
             {link.label}
           </a>
@@ -132,10 +164,24 @@ export default function Navigation({ currentPage, onNavigate }: NavigationProps)
         <a
           href="#/contact"
           onClick={(e) => handleLinkClick('contact', e)}
-          className="font-display text-3xl font-bold text-fog-2 hover:text-violet transition-colors"
+          className={`font-display text-2xl font-bold transition-colors ${
+            currentPage === 'contact' ? 'text-violet' : 'text-fog-2 hover:text-white'
+          }`}
         >
           Contact
         </a>
+        {onOpenPalette && (
+          <button
+            onClick={() => {
+              setDrawerOpen(false);
+              onOpenPalette();
+            }}
+            className="font-display text-[16px] font-bold text-violet hover:text-white flex items-center gap-2.5 mt-4 px-5 py-2.5 border border-violet/20 rounded-full bg-violet/5 hover:bg-violet/10 transition-all cursor-pointer"
+          >
+            <Search className="w-4 h-4" />
+            <span>Search Portfolio</span>
+          </button>
+        )}
       </div>
     </>
   );
